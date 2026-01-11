@@ -7,6 +7,7 @@ let
   home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz;
 in
 {
+  boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
   imports =
     [ # Include the results of the hardware scan.
@@ -18,21 +19,9 @@ in
 
   hardware.sensor.iio.enable = true;
   services.udev.extraHwdb = ''
-  sensor:modalias:acpi:*:dmi:*svnCHUWI*:pnHi10 Max*
-   ACCEL_MOUNT_MATRIX=0, 1, 0; -1, 0, 0; 0, 0, 1
-  '';
-
-  # services.udev.extraHwdb = ''
-  #   sensor:modalias:acpi:MXC*:dmi:*:svnCHUWI*:pnHi10 Max:*
-  #    ACCEL_MOUNT_MATRIX=-1, 0, 0; 0,-1, 0; 0, 0, 1
-  # '';
-
-  
-# Вариант 2: Если первый не работает, попробуйте другую сигнатуру
-  # services.udev.extraHwdb = ''
-  #  sensor:modalias:acpi:*MXC4005*:*
-  #   ACCEL_MOUNT_MATRIX=0, -1, 0; 1, 0, 0; 0, 0, 1
-  # '';
+sensor:modalias:*
+ ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
+'';
 
   # Передаем аргумент disks в модуль disk-config.nix
   _module.args.disks = [ "/dev/nvme0n1" ];  # Укажите ваш диск здесь
@@ -118,7 +107,7 @@ in
   };
   home-manager.useGlobalPkgs = true;
   home-manager.users.koshchei = { pkgs, ... }: {
-    home.packages = with pkgs; [ atool httpie blink-qt ];
+    home.packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
     programs.zsh.enable = true;
 
     xdg.enable = true;

@@ -16,6 +16,7 @@ in
       ./disko-config.nix
       ./network.nix
       ./mts-cloud_vpn.nix
+      ./tmux.nix
       (import "${home-manager}/nixos")
     ];
 
@@ -91,80 +92,88 @@ sensor:modalias:*
       keepassxc
     ];
   };
-  home-manager.useGlobalPkgs = true;
-  home-manager.users.koshchei = { pkgs, ... }: {
-    home.packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
-    programs.zsh.enable = true;
 
-    xdg.enable = true;
-    xdg.userDirs.enable = true;
-    xdg.userDirs.createDirectories = true;
-    xdg.desktopEntries = {
-      "blink-qt" = { # Создайте запись для своего приложения
-        name = "blink-qt";
-        exec = "/home/koshchei/.nix-profile/bin/blink";
-        terminal = false;
-        type = "Application";
-        categories = [ "Utility" ];
-        icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
-	mimeType = [ "message/sip" ];
-        # Другие параметры по необходимости
+  home-manager = {
+    useGlobalPkgs = true;
+    users.koshchei = { pkgs, ... }: {
+      home = {
+        packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
+        stateVersion = "25.11";
+	sessionVariables.EDITOR = "nvim";
       };
-    };
-
-    dconf = {
-      enable = true;
-      settings = {
-        "org/gnome/desktop/input-sources" = {
-          xkb-options = [ "ctrl:nocaps" ];
-        };
-        "org/gnome/shell" = {
-          # disable-user-extensions = true; # Optionally disable user extensions entirely
-          enabled-extensions = [
-            # Put UUIDs of extensions that you want to enable here.
-            # If the extension you want to enable is packaged in nixpkgs,
-            # you can easily get its UUID by accessing its extensionUuid
-            # field (look at the following example).
-            pkgs.gnomeExtensions.gnome-40-ui-improvements.extensionUuid
-	    pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
-	    # pkgs.gnomeExtensions.gjs-osk.extensionUuid
-  
-            # Alternatively, you can manually pass UUID as a string.
-            # "gnome-ui-tune@axxapy"
-            # ...
-          ];
-        };
-  
-        # Configure individual extensions
-        # "org/gnome/shell/extensions/blur-my-shell" = {
-        #   brightness = 0.75;
-        #   noise-amount = 0;
-        # };
-
-        "org/gnome/shell/extensions/bing-wallpaper-changer" = {
-          hide = false;
-	  set-background = true;
-        };
-
-	# "org/gnome/online-accounts" = {
-        #   # Конфигурация Google аккаунта
-        #   accounts = {
-        #     google = {
-        #       # Базовые настройки (без пароля, который должен быть введен вручную)
-        #       enable-calendar = true;
-        #       enable-contacts = true;
-        #       enable-mail = true;
-        #       enable-tasks = true;
-        #       identity = "ваш-email@gmail.com";
-        #       presentation-identity = "Ваше Имя";
-        #     };
-        #   };
-        # };
+      programs = {
+        zsh.enable = true;
       };
+  
+      xdg.enable = true;
+      xdg.userDirs.enable = true;
+      xdg.userDirs.createDirectories = true;
+      xdg.desktopEntries = {
+        "blink-qt" = { # Создайте запись для своего приложения
+          name = "blink-qt";
+          exec = "/home/koshchei/.nix-profile/bin/blink";
+          terminal = false;
+          type = "Application";
+          categories = [ "Utility" ];
+          icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
+  	mimeType = [ "message/sip" ];
+          # Другие параметры по необходимости
+        };
+      };
+  
+      dconf = {
+        enable = true;
+        settings = {
+          "org/gnome/desktop/input-sources" = {
+            xkb-options = [ "ctrl:nocaps" ];
+          };
+          "org/gnome/shell" = {
+            # disable-user-extensions = true; # Optionally disable user extensions entirely
+            enabled-extensions = [
+              # Put UUIDs of extensions that you want to enable here.
+              # If the extension you want to enable is packaged in nixpkgs,
+              # you can easily get its UUID by accessing its extensionUuid
+              # field (look at the following example).
+              pkgs.gnomeExtensions.gnome-40-ui-improvements.extensionUuid
+  	    pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
+  	    # pkgs.gnomeExtensions.gjs-osk.extensionUuid
+    
+              # Alternatively, you can manually pass UUID as a string.
+              # "gnome-ui-tune@axxapy"
+              # ...
+            ];
+          };
+    
+          # Configure individual extensions
+          # "org/gnome/shell/extensions/blur-my-shell" = {
+          #   brightness = 0.75;
+          #   noise-amount = 0;
+          # };
+  
+          "org/gnome/shell/extensions/bing-wallpaper-changer" = {
+            hide = false;
+  	  set-background = true;
+          };
+  
+  	# "org/gnome/online-accounts" = {
+          #   # Конфигурация Google аккаунта
+          #   accounts = {
+          #     google = {
+          #       # Базовые настройки (без пароля, который должен быть введен вручную)
+          #       enable-calendar = true;
+          #       enable-contacts = true;
+          #       enable-mail = true;
+          #       enable-tasks = true;
+          #       identity = "ваш-email@gmail.com";
+          #       presentation-identity = "Ваше Имя";
+          #     };
+          #   };
+          # };
+        };
+      };
+      # The state version is required and should stay at the version you
+      # originally installed.
     };
-    # The state version is required and should stay at the version you
-    # originally installed.
-    home.stateVersion = "25.11";
   };
 
   nixpkgs = {

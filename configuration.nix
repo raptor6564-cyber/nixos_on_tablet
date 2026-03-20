@@ -16,8 +16,9 @@ in
       ./disko-config.nix
       ./network.nix
       ./mts-cloud_vpn.nix
-      ./tmux.nix
       (import "${home-manager}/nixos")
+      ./tmux.nix
+      ./fish.nix
     ];
 
   hardware.sensor.iio.enable = true;
@@ -86,7 +87,7 @@ sensor:modalias:*
   users.users.koshchei = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
+    # shell = pkgs.zsh;
     packages = with pkgs; [
       nerd-fonts.cousine
       keepassxc
@@ -200,7 +201,7 @@ sensor:modalias:*
       scrollback.lines = 10000;
     };
   };
-  programs.zsh.enable = true;
+  # programs.zsh.enable = true;
 
   xdg.terminal-exec.enable = true;
   xdg.terminal-exec.settings = {

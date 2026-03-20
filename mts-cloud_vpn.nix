@@ -18,6 +18,7 @@
           ];
           endpoint = "93.125.123.85:51820";
           publicKey = "uJMsq8ISHxditKNndBfqlFhVCIHAvxqplRpml3RMnio=";
+	  presharedKey = "gUww1dBFSJjcoXu0IlZ/XTH4z+TFAMqrjmn2b/tePiw=";
         }
       ];
     };

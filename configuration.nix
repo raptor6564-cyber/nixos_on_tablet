@@ -115,6 +115,9 @@ sensor:modalias:*
     dconf = {
       enable = true;
       settings = {
+        "org/gnome/desktop/input-sources" = {
+          xkb-options = [ "ctrl:nocaps" ];
+        };
         "org/gnome/shell" = {
           # disable-user-extensions = true; # Optionally disable user extensions entirely
           enabled-extensions = [

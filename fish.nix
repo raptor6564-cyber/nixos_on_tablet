@@ -1,6 +1,12 @@
 { config, lib, pkgs, ... }: {
+  environment.systemPackages = [
+    pkgs.fishPlugins.autopair
+  ];
   programs.fish = {
     enable = true;
+    shellInit = ''
+      fish_vi_key_bindings
+    '';
     interactiveShellInit = ''
       set fish_greeting # Disable greeting
     '';

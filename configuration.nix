@@ -19,6 +19,7 @@ in
       (import "${home-manager}/nixos")
       ./tmux.nix
       ./fish.nix
+      ./nvim.nix
     ];
 
   hardware.sensor.iio.enable = true;
@@ -100,7 +101,6 @@ sensor:modalias:*
       home = {
         packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
         stateVersion = "25.11";
-	sessionVariables.EDITOR = "nvim";
       };
       programs = {
         zsh.enable = true;
@@ -195,7 +195,7 @@ sensor:modalias:*
   programs.foot = {
     enable = true;
     theme = "kitty";
-    enableZshIntegration = true;
+    enableFishIntegration = true;
     settings = {
       main.font = "CousineNerdFontMono:size=15";
       scrollback.lines = 10000;
@@ -216,7 +216,6 @@ sensor:modalias:*
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    neovim
     git
     htop
     tcpdump

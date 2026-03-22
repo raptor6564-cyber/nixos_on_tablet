@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }: {
-  environment.systemPackages = [
-    pkgs.fishPlugins.autopair
+  environment.systemPackages = with pkgs; [
+    fishPlugins.autopair
+    fishPlugins.done
   ];
   programs.fish = {
     enable = true;

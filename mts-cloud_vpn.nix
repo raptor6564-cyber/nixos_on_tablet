@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 {
-  networking.wireguard.enable = false;
+  networking.wireguard.enable = true;
   networking.wireguard.interfaces = {
     wg0 = {
       mtu = 1280;

@@ -3,24 +3,9 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
-let
-  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz;
-in
 {
   boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      "${builtins.fetchTarball "https://github.com/nix-community/disko/archive/master.tar.gz"}/module.nix"
-      ./disko-config.nix
-      ./network.nix
-      ./mts-cloud_vpn.nix
-      (import "${home-manager}/nixos")
-      ./tmux.nix
-      ./fish.nix
-      ./nvim.nix
-    ];
 
   hardware.sensor.iio.enable = true;
   services.udev.extraHwdb = ''
@@ -96,81 +81,82 @@ sensor:modalias:*
   };
 
   home-manager = {
-    useGlobalPkgs = true;
+    # users.jdoe = ./home.nix;
+
+    # Optionally, use extraSpecialArgs to pass
+    # arguments to home.nix
     users.koshchei = { pkgs, ... }: {
       home = {
-        packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
-        stateVersion = "25.11";
-      };
-      programs = {
-        zsh.enable = true;
+	packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
+	stateVersion = "25.11";
+	# sessionVariables.EDITOR = "nvim";
       };
   
       xdg.enable = true;
       xdg.userDirs.enable = true;
       xdg.userDirs.createDirectories = true;
       xdg.desktopEntries = {
-        "blink-qt" = { # Создайте запись для своего приложения
-          name = "blink-qt";
-          exec = "/home/koshchei/.nix-profile/bin/blink";
-          terminal = false;
-          type = "Application";
-          categories = [ "Utility" ];
-          icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
-  	mimeType = [ "message/sip" ];
-          # Другие параметры по необходимости
-        };
+	"blink-qt" = { # Создайте запись для своего приложения
+	  name = "blink-qt";
+	  exec = "/home/koshchei/.nix-profile/bin/blink";
+	  terminal = false;
+	  type = "Application";
+	  categories = [ "Utility" ];
+	  icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
+	mimeType = [ "message/sip" ];
+	  # Другие параметры по необходимости
+	};
       };
   
       dconf = {
-        enable = true;
-        settings = {
-          "org/gnome/desktop/input-sources" = {
-            xkb-options = [ "ctrl:nocaps" ];
-          };
-          "org/gnome/shell" = {
-            # disable-user-extensions = true; # Optionally disable user extensions entirely
-            enabled-extensions = [
-              # Put UUIDs of extensions that you want to enable here.
-              # If the extension you want to enable is packaged in nixpkgs,
-              # you can easily get its UUID by accessing its extensionUuid
-              # field (look at the following example).
-              pkgs.gnomeExtensions.gnome-40-ui-improvements.extensionUuid
-  	    pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
-  	    # pkgs.gnomeExtensions.gjs-osk.extensionUuid
+	enable = true;
+	settings = {
+	  "org/gnome/desktop/input-sources" = {
+	    xkb-options = [ "ctrl:nocaps" ];
+	  };
+	  "org/gnome/shell" = {
+	    # disable-user-extensions = true; # Optionally disable user extensions entirely
+	    enabled-extensions = [
+	      # Put UUIDs of extensions that you want to enable here.
+	      # If the extension you want to enable is packaged in nixpkgs,
+	      # you can easily get its UUID by accessing its extensionUuid
+	      # field (look at the following example).
+	      pkgs.gnomeExtensions.gnome-40-ui-improvements.extensionUuid
+	    pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
+	    # pkgs.gnomeExtensions.gjs-osk.extensionUuid
     
-              # Alternatively, you can manually pass UUID as a string.
-              # "gnome-ui-tune@axxapy"
-              # ...
-            ];
-          };
+	      # Alternatively, you can manually pass UUID as a string.
+	      # "gnome-ui-tune@axxapy"
+	      # ...
+	    ];
+	  };
     
-          # Configure individual extensions
-          # "org/gnome/shell/extensions/blur-my-shell" = {
-          #   brightness = 0.75;
-          #   noise-amount = 0;
-          # };
+	  # Configure individual extensions
+	  # "org/gnome/shell/extensions/blur-my-shell" = {
+	  #   brightness = 0.75;
+	  #   noise-amount = 0;
+	  # };
   
-          "org/gnome/shell/extensions/bing-wallpaper-changer" = {
-            hide = false;
-  	  set-background = true;
-          };
+	  "org/gnome/shell/extensions/bing-wallpaper-changer" = {
+	    hide = false;
+	  set-background = true;
+	  };
   
-  	# "org/gnome/online-accounts" = {
-          #   # Конфигурация Google аккаунта
-          #   accounts = {
-          #     google = {
-          #       # Базовые настройки (без пароля, который должен быть введен вручную)
-          #       enable-calendar = true;
-          #       enable-contacts = true;
-          #       enable-mail = true;
-          #       enable-tasks = true;
-          #       identity = "ваш-email@gmail.com";
-          #       presentation-identity = "Ваше Имя";
-          #     };
-          #   };
-          # };
-        };
+	# "org/gnome/online-accounts" = {
+	  #   # Конфигурация Google аккаунта
+	  #   accounts = {
+	  #     google = {
+	  #       # Базовые настройки (без пароля, который должен быть введен вручную)
+	  #       enable-calendar = true;
+	  #       enable-contacts = true;
+	  #       enable-mail = true;
+	  #       enable-tasks = true;
+	  #       identity = "ваш-email@gmail.com";
+	  #       presentation-identity = "Ваше Имя";
+	  #     };
+	  #   };
+	  # };
+	};
       };
       # The state version is required and should stay at the version you
       # originally installed.
@@ -201,7 +187,6 @@ sensor:modalias:*
       scrollback.lines = 10000;
     };
   };
-  # programs.zsh.enable = true;
 
   xdg.terminal-exec.enable = true;
   xdg.terminal-exec.settings = {

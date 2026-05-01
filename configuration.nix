@@ -3,6 +3,10 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
+let
+  driftwm-flake = builtins.getFlake "github:malbiruk/driftwm";
+  driftwm = driftwm-flake.packages.x86_64-linux.default;
+in
 {
   boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
@@ -220,6 +224,7 @@ sensor:modalias:*
     (yazi.override {
 		_7zz = _7zz-rar;  # Support for RAR extraction
      })
+    driftwm
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -242,7 +247,8 @@ sensor:modalias:*
   services.openssh.settings.PermitRootLogin = "yes";
 
   services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+  # services.desktopManager.gnome.enable = true;
+  services.displayManager.sessionPackages = [ driftwm ];
 
 
   # Open ports in the firewall.

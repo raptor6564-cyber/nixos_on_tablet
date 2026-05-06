@@ -2,7 +2,10 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
+let
+    driftwm = inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+in
 {
   boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
@@ -67,7 +70,8 @@ sensor:modalias:*
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
-  services.flatpak.enable = true;
+  # services.flatpak.enable = true;
+  # xdg.portal.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koshchei = {
@@ -75,7 +79,6 @@ sensor:modalias:*
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     # shell = pkgs.zsh;
     packages = with pkgs; [
-      nerd-fonts.cousine
       keepassxc
     ];
   };
@@ -122,44 +125,18 @@ sensor:modalias:*
 	      # you can easily get its UUID by accessing its extensionUuid
 	      # field (look at the following example).
 	      pkgs.gnomeExtensions.gnome-40-ui-improvements.extensionUuid
-	    pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
-	    # pkgs.gnomeExtensions.gjs-osk.extensionUuid
-    
-	      # Alternatively, you can manually pass UUID as a string.
-	      # "gnome-ui-tune@axxapy"
-	      # ...
+              pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
 	    ];
 	  };
     
-	  # Configure individual extensions
-	  # "org/gnome/shell/extensions/blur-my-shell" = {
-	  #   brightness = 0.75;
-	  #   noise-amount = 0;
-	  # };
-  
 	  "org/gnome/shell/extensions/bing-wallpaper-changer" = {
-	    hide = false;
-	  set-background = true;
+            hide = false;
+	    set-background = true;
 	  };
-  
-	# "org/gnome/online-accounts" = {
-	  #   # Конфигурация Google аккаунта
-	  #   accounts = {
-	  #     google = {
-	  #       # Базовые настройки (без пароля, который должен быть введен вручную)
-	  #       enable-calendar = true;
-	  #       enable-contacts = true;
-	  #       enable-mail = true;
-	  #       enable-tasks = true;
-	  #       identity = "ваш-email@gmail.com";
-	  #       presentation-identity = "Ваше Имя";
-	  #     };
-	  #   };
-	  # };
 	};
       };
-      # The state version is required and should stay at the version you
-      # originally installed.
+
+      services.swww.enable = true;
     };
   };
 
@@ -187,6 +164,10 @@ sensor:modalias:*
       scrollback.lines = 10000;
     };
   };
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.cousine
+  ];
 
   xdg.terminal-exec.enable = true;
   xdg.terminal-exec.settings = {
@@ -220,6 +201,14 @@ sensor:modalias:*
     (yazi.override {
 		_7zz = _7zz-rar;  # Support for RAR extraction
      })
+    driftwm
+    # nerd-fonts.cousine
+    fuzzel
+    # sfwbar
+    wev
+    brightnessctl
+    remmina
+    telegram-desktop
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -235,6 +224,7 @@ sensor:modalias:*
   # };
 
   # List services that you want to enable:
+  programs.niri.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -242,8 +232,7 @@ sensor:modalias:*
   services.openssh.settings.PermitRootLogin = "yes";
 
   services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
+  # services.desktopManager.gnome.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

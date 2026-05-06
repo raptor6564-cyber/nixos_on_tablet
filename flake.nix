@@ -5,6 +5,7 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    driftwm.url = "github:malbiruk/driftwm";  # Добавьте эту строку
   };
 
   outputs = { self, nixpkgs, disko, home-manager, ... }@inputs: {
@@ -25,6 +26,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
         }
+        ./waybar/waybar.nix
       ];
     };
   };

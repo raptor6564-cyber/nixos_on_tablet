@@ -4,7 +4,16 @@
 
 { config, lib, pkgs, inputs, ... }:
 let
-    driftwm = inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  driftwm = inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  # Скрипт для включения/выключения wvkbd
+  wvkbd-toggle = pkgs.writeShellScriptBin "wvkbd-toggle" ''
+    PIDS=$(pgrep -x wvkbd-mobintl)
+    if [ -z "$PIDS" ]; then
+      ${pkgs.wvkbd}/bin/wvkbd-mobintl -L 300
+    else
+      killall -34 wvkbd-mobintl
+    fi
+  '';
 in
 {
   boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
@@ -209,6 +218,9 @@ sensor:modalias:*
     brightnessctl
     remmina
     telegram-desktop
+
+    wvkbd
+    wvkbd-toggle
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [

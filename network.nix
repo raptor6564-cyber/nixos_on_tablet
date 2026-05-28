@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    networkmanager-l2tp
+  ];
   networking.hostName = "mytablet"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -16,4 +19,7 @@
   #     path = "ipsec.nm-l2tp.secrets";
   #   }
   # ];
+
+  systemd.tmpfiles.rules = [ "L /etc/ipsec.secrets - - - - /etc/ipsec.d/ipsec.nm-l2tp.secrets" ];
+  environment.etc."strongswan.conf".text = "";
 }

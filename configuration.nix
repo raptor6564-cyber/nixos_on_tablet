@@ -32,9 +32,6 @@ sensor:modalias:*
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  systemd.tmpfiles.rules = [ "L /etc/ipsec.secrets - - - - /etc/ipsec.d/ipsec.nm-l2tp.secrets" ];
-  environment.etc."strongswan.conf".text = "";
-
   # Set your time zone.
   time.timeZone = "Europe/Minsk";
 
@@ -197,7 +194,6 @@ sensor:modalias:*
     tmux
     zsh
     oh-my-zsh
-    networkmanager-l2tp
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.bing-wallpaper-changer
     wl-clipboard
@@ -221,6 +217,7 @@ sensor:modalias:*
 
     wvkbd
     wvkbd-toggle
+    gnumake
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [

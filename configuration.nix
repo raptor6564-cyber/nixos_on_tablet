@@ -35,6 +35,13 @@ sensor:modalias:*
   # Set your time zone.
   time.timeZone = "Europe/Minsk";
 
+  networking.networkmanager = {
+    enable = true;  # Easiest to use and most distros use this by default.
+    plugins = with pkgs; [ networkmanager-l2tp networkmanager-strongswan ];
+  };
+  services.strongswan.enable = true;
+  services.xl2tpd.enable = true;
+  services.strongswan.secrets = [ "ipsec.d/ipsec.nm-l2tp.secrets" ];
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";

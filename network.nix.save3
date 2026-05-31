@@ -12,13 +12,16 @@
       type = "transport";
       left = "%defaultroute";
       leftprotoport = "17/1701";
-      leftsubnet = "";
+      # leftsubnet = "";               # транспортный режим – без подсетей
+      leftsubnet = null;               # транспортный режим – без подсетей
       right = "93.125.121.153";
       rightprotoport = "17/1701";
-      rightsubnet = "";
+      # rightsubnet = "";
+      rightsubnet = null;
       authby = "psk";
-      ike = "aes256-sha256-modp2048";        # фаза 1 работает
-      esp = "aes128-sha1-modp2048";        # начните с этого, с PFS
+      ike = "aes256-sha256-modp2048";   # фаза 1 уже работает
+      esp = "aes128-sha256-modp2048";   # алгоритм фазы 2 с PFS
+      pfs = "yes";                      # требовать PFS (DH group из esp)
       keyingtries = "%forever";
       dpdaction = "restart";
       dpddelay = "30s";
@@ -26,24 +29,23 @@
     };
   };
 
+  # PSK отдельным файлом (путь в списке)
   services.strongswan.secrets = [
     "${pkgs.writeText "ipsec-psk.secrets" ''
       %any 93.125.121.153 : PSK "CL*Z%{3h2abh?eifZ7"
     ''}"
   ];
 
-  # Максимальное логирование в syslog (смотрим через journalctl)
+  # Детальное логирование в syslog (смотреть через journalctl)
   environment.etc."strongswan.conf".text = ''
     charon {
       load_modular = yes
       syslog {
         identifier = charon
         daemon {
-          default = 4
-          ike = 4
-          cfg = 4
-          knl = 2
-          net = 2
+          default = 2
+          ike = 3
+          cfg = 3
         }
       }
     }

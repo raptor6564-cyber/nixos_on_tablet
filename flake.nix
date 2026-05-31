@@ -17,7 +17,7 @@
         disko.nixosModules.disko
         ./disko-config.nix
         ./configuration.nix
-        ./network.nix
+        # ./network.nix
         ./tmux.nix
         ./fish.nix
         ./nvim.nix

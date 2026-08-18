@@ -5,7 +5,7 @@
         neovim = {
 	  enable = true;
 	  defaultEditor = true;
-	  extraLuaConfig = 
+	  initLua = 
             let
 	      clipboard = lib.mkAfter "vim.opt.clipboard = 'unnamedplus'";
 	    in

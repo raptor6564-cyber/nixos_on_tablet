@@ -2,25 +2,22 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
-  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz;
+  # driftwm = inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  # Скрипт для включения/выключения wvkbd
+  wvkbd-toggle = pkgs.writeShellScriptBin "wvkbd-toggle" ''
+    PIDS=$(pgrep -x wvkbd-mobintl)
+    if [ -z "$PIDS" ]; then
+      ${pkgs.wvkbd}/bin/wvkbd-mobintl -L 300
+    else
+      ${pkgs.wvkbd}/bin/killall -34 $PIDS
+    fi
+  '';
 in
 {
-  boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
+  # boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      "${builtins.fetchTarball "https://github.com/nix-community/disko/archive/master.tar.gz"}/module.nix"
-      ./disko-config.nix
-      ./network.nix
-      ./mts-cloud_vpn.nix
-      (import "${home-manager}/nixos")
-      ./tmux.nix
-      ./fish.nix
-      ./nvim.nix
-    ];
 
   hardware.sensor.iio.enable = true;
   services.udev.extraHwdb = ''
@@ -35,11 +32,19 @@ sensor:modalias:*
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  systemd.tmpfiles.rules = [ "L /etc/ipsec.secrets - - - - /etc/ipsec.d/ipsec.nm-l2tp.secrets" ];
-  environment.etc."strongswan.conf".text = "";
-
   # Set your time zone.
   time.timeZone = "Europe/Minsk";
+
+  networking.networkmanager = {
+    enable = true;  # Easiest to use and most distros use this by default.
+    plugins = with pkgs; [ networkmanager-l2tp networkmanager-strongswan ];
+  };
+  services.strongswan.enable = true;
+  services.xl2tpd.enable = true;
+  services.strongswan.secrets = [ "ipsec.d/ipsec.nm-l2tp.secrets" ];
+  
+  systemd.tmpfiles.rules = [ "L /etc/ipsec.secrets - - - - /etc/ipsec.d/ipsec.nm-l2tp.secrets" ];
+  environment.etc."strongswan.conf".text = "";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -82,7 +87,8 @@ sensor:modalias:*
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
-  services.flatpak.enable = true;
+  # services.flatpak.enable = true;
+  # xdg.portal.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koshchei = {
@@ -90,106 +96,42 @@ sensor:modalias:*
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     # shell = pkgs.zsh;
     packages = with pkgs; [
-      nerd-fonts.cousine
       keepassxc
     ];
   };
 
   home-manager = {
-    useGlobalPkgs = true;
+    # users.jdoe = ./home.nix;
+
+    # Optionally, use extraSpecialArgs to pass
+    # arguments to home.nix
     users.koshchei = { pkgs, ... }: {
       home = {
-        packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
-        stateVersion = "25.11";
-      };
-      programs = {
-        zsh.enable = true;
+	packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
+	stateVersion = "26.05";
+	# sessionVariables.EDITOR = "nvim";
       };
   
       xdg.enable = true;
       xdg.userDirs.enable = true;
       xdg.userDirs.createDirectories = true;
       xdg.desktopEntries = {
-        "blink-qt" = { # Создайте запись для своего приложения
-          name = "blink-qt";
-          exec = "/home/koshchei/.nix-profile/bin/blink";
-          terminal = false;
-          type = "Application";
-          categories = [ "Utility" ];
-          icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
-  	mimeType = [ "message/sip" ];
-          # Другие параметры по необходимости
-        };
+	"blink-qt" = { # Создайте запись для своего приложения
+	  name = "blink-qt";
+	  exec = "/home/koshchei/.nix-profile/bin/blink";
+	  terminal = false;
+	  type = "Application";
+	  categories = [ "Utility" ];
+	  icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
+	mimeType = [ "message/sip" ];
+	  # Другие параметры по необходимости
+	};
       };
   
-      dconf = {
-        enable = true;
-        settings = {
-          "org/gnome/desktop/input-sources" = {
-            xkb-options = [ "ctrl:nocaps" ];
-          };
-          "org/gnome/shell" = {
-            # disable-user-extensions = true; # Optionally disable user extensions entirely
-            enabled-extensions = [
-              # Put UUIDs of extensions that you want to enable here.
-              # If the extension you want to enable is packaged in nixpkgs,
-              # you can easily get its UUID by accessing its extensionUuid
-              # field (look at the following example).
-              pkgs.gnomeExtensions.gnome-40-ui-improvements.extensionUuid
-  	    pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
-  	    # pkgs.gnomeExtensions.gjs-osk.extensionUuid
-    
-              # Alternatively, you can manually pass UUID as a string.
-              # "gnome-ui-tune@axxapy"
-              # ...
-            ];
-          };
-    
-          # Configure individual extensions
-          # "org/gnome/shell/extensions/blur-my-shell" = {
-          #   brightness = 0.75;
-          #   noise-amount = 0;
-          # };
-  
-          "org/gnome/shell/extensions/bing-wallpaper-changer" = {
-            hide = false;
-  	  set-background = true;
-          };
-  
-  	# "org/gnome/online-accounts" = {
-          #   # Конфигурация Google аккаунта
-          #   accounts = {
-          #     google = {
-          #       # Базовые настройки (без пароля, который должен быть введен вручную)
-          #       enable-calendar = true;
-          #       enable-contacts = true;
-          #       enable-mail = true;
-          #       enable-tasks = true;
-          #       identity = "ваш-email@gmail.com";
-          #       presentation-identity = "Ваше Имя";
-          #     };
-          #   };
-          # };
-        };
-      };
-      # The state version is required and should stay at the version you
-      # originally installed.
+      services.awww.enable = true;
     };
   };
 
-  nixpkgs = {
-    overlays = [
-      (final: prev: {
-        gnome = prev.gnome.overrideScope (gfinal: gprev: {
-          gvfs = prev.gvfs.override {
-            googleSupport = true;
-  	  gnomeSupport = true;
-  	};
-        });
-      })
-    ];
-    config.permittedInsecurePackages = [ "libsoup-2.74.3" ];
-  };
 
   programs.firefox.enable = true;
   programs.foot = {
@@ -201,16 +143,21 @@ sensor:modalias:*
       scrollback.lines = 10000;
     };
   };
-  # programs.zsh.enable = true;
 
-  xdg.terminal-exec.enable = true;
-  xdg.terminal-exec.settings = {
-    GNOME = [
-      "foot.desktop"
-    ];
-    default = [
-      "foot.desktop"
-    ];
+  fonts.packages = with pkgs; [
+    nerd-fonts.cousine
+  ];
+
+  xdg.terminal-exec = {
+    enable = true;
+    settings = {
+      GNOME = [
+        "foot.desktop"
+      ];
+      default = [
+        "foot.desktop"
+      ];
+    };
   };
 
   # List packages installed in system profile.
@@ -222,9 +169,6 @@ sensor:modalias:*
     tmux
     zsh
     oh-my-zsh
-    networkmanager-l2tp
-    gnomeExtensions.gnome-40-ui-improvements
-    gnomeExtensions.bing-wallpaper-changer
     wl-clipboard
     cifs-utils
     waypipe
@@ -235,10 +179,25 @@ sensor:modalias:*
     (yazi.override {
 		_7zz = _7zz-rar;  # Support for RAR extraction
      })
+    # driftwm
+    # nerd-fonts.cousine
+    fuzzel
+    # sfwbar
+    wev
+    brightnessctl
+    remmina
+    telegram-desktop
+
+    wvkbd
+    wvkbd-toggle
+    procps
+    gnumake
+    killall
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "7zz"
+    "uasm"
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -250,6 +209,8 @@ sensor:modalias:*
   # };
 
   # List services that you want to enable:
+  programs.niri.enable = true;
+  services.iio-niri.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -257,8 +218,8 @@ sensor:modalias:*
   services.openssh.settings.PermitRootLogin = "yes";
 
   services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
+  services.displayManager.defaultSession = "niri";
+  # services.desktopManager.gnome.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -338,6 +299,6 @@ sensor:modalias:*
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 }
 

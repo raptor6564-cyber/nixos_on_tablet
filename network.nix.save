@@ -1,4 +1,10 @@
 { config, lib, pkgs, ... }:
+let
+  # Файл с PSK для strongSwan
+  ipsecSecretFile = pkgs.writeText "ipsec-psk.secrets" ''
+    %any 93.125.121.153 : PSK "CL*Z%{3h2abh?eifZ7"
+  '';
+in
 {
   services.strongswan.enable = true;
   services.strongswan.setup = {
@@ -12,15 +18,11 @@
       type = "transport";
       left = "%defaultroute";
       leftprotoport = "17/1701";
-      # leftsubnet = "";
       right = "93.125.121.153";
       rightprotoport = "17/1701";
-      # rightsubnet = "";
       authby = "psk";
-      # ike = "aes256-sha256-modp2048";        # фаза 1 работает
-      ike = "3des-sha1-modp1024";      # алгоритм фазы 1, который принял сервер
-      # esp = "aes128-sha1-modp2048";        # начните с этого, с PFS
-      esp = "aes128-sha1";             # алгоритм фазы 2 без PFS
+      ike = "aes256-sha256-modp2048";
+      esp = "aes256-sha256";
       keyingtries = "%forever";
       dpdaction = "restart";
       dpddelay = "30s";
@@ -28,15 +30,15 @@
     };
   };
 
-  # %any 93.125.121.153 : PSK 0sQ0wqWiV7M2gyYWJoP2VpZlo3
+  # Передаём список путей к файлам секретов
   services.strongswan.secrets = [
-    "${pkgs.writeText "ipsec-psk.secrets" ''
-      93.125.121.153 : PSK 0sQ0wqWiV7M2gyYWJoP2VpZlo3
-    ''}"
+    "${ipsecSecretFile}"
   ];
 
-  # Очищаем strongswan.conf, чтобы не было конфликтов
-  environment.etc."strongswan.conf".text = "";
+  # Чтобы убрать предупреждение /etc/strongswan.conf
+  environment.etc."strongswan.conf".text = ''
+    charon { load_modular = yes }
+  '';
 
   services.xl2tpd.enable = true;
 

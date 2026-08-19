@@ -17,13 +17,14 @@
         ./configuration.nix
         ./network.nix
         ./tmux.nix
-        ./fish.nix
-        ./nvim.nix
+
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
         }
+        ./home/default.nix
+
         ./waybar/waybar.nix
       ];
     };

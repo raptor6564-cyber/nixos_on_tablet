@@ -88,24 +88,11 @@ sensor:modalias:*
     users.koshchei = { pkgs, ... }: {
       home = {
 	packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
-	stateVersion = "25.11";
+	stateVersion = "26.05";
 	# sessionVariables.EDITOR = "nvim";
       };
   
-      xdg.enable = true;
-      xdg.userDirs.enable = true;
-      xdg.userDirs.createDirectories = true;
       xdg.desktopEntries = {
-	"blink-qt" = { # Создайте запись для своего приложения
-	  name = "blink-qt";
-	  exec = "/home/koshchei/.nix-profile/bin/blink";
-	  terminal = false;
-	  type = "Application";
-	  categories = [ "Utility" ];
-	  icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
-	mimeType = [ "message/sip" ];
-	  # Другие параметры по необходимости
-	};
       };
   
       dconf = {
@@ -152,15 +139,6 @@ sensor:modalias:*
   };
 
   programs.firefox.enable = true;
-  programs.foot = {
-    enable = true;
-    theme = "kitty";
-    enableFishIntegration = true;
-    settings = {
-      main.font = "CousineNerdFontMono:size=15";
-      scrollback.lines = 10000;
-    };
-  };
 
   fonts.packages = with pkgs; [
     nerd-fonts.cousine
@@ -205,7 +183,13 @@ sensor:modalias:*
     brightnessctl
     remmina
     telegram-desktop
+
+    fishPlugins.autopair
+    fishPlugins.done
+    fishPlugins.z
   ];
+
+  environment.variables.EDITOR = "nvim";
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "7zz"
@@ -221,7 +205,51 @@ sensor:modalias:*
   # };
 
   # List services that you want to enable:
-  programs.niri.enable = true;
+
+  programs = {
+    niri.enable = true;
+
+    fish = {
+      enable = true;
+      shellInit = ''
+        fish_vi_key_bindings
+      '';
+      interactiveShellInit = ''
+        set fish_greeting # Disable greeting
+      '';
+    };
+
+    bash = {
+      interactiveShellInit = ''
+        if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+        then
+          shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+          exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+        fi
+      '';
+    };
+
+    virt-manager.enable = true;
+
+    nautilus-open-any-terminal = {
+      enable = true;
+      terminal = "foot";
+    };
+
+    foot = {
+      enable = true;
+      theme = "kitty";
+      enableFishIntegration = true;
+      settings = {
+        main = {
+          font = "CousineNerdFontMono:size=15";
+        };
+        scrollback = {
+          lines = 10000;
+        };
+      };
+    };
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

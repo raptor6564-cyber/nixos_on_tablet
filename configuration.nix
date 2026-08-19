@@ -3,9 +3,6 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, inputs, ... }:
-let
-    driftwm = inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default;
-in
 {
   boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
@@ -201,7 +198,6 @@ sensor:modalias:*
     (yazi.override {
 		_7zz = _7zz-rar;  # Support for RAR extraction
      })
-    driftwm
     # nerd-fonts.cousine
     fuzzel
     # sfwbar
@@ -213,6 +209,7 @@ sensor:modalias:*
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "7zz"
+    "uasm"
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

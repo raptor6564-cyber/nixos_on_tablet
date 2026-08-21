@@ -14,6 +14,7 @@
       imports = [
         ./fish.nix
         ./nvim.nix
+        ./niri/niri.nix
       ];
 
       xdg.enable = true;

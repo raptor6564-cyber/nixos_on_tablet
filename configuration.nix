@@ -80,50 +80,6 @@ sensor:modalias:*
     ];
   };
 
-  home-manager = {
-    # users.jdoe = ./home.nix;
-
-    # Optionally, use extraSpecialArgs to pass
-    # arguments to home.nix
-    users.koshchei = { pkgs, ... }: {
-      home = {
-	packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
-	stateVersion = "26.05";
-	# sessionVariables.EDITOR = "nvim";
-      };
-  
-      xdg.desktopEntries = {
-      };
-  
-      dconf = {
-	enable = true;
-	settings = {
-	  "org/gnome/desktop/input-sources" = {
-	    xkb-options = [ "ctrl:nocaps" ];
-	  };
-	  "org/gnome/shell" = {
-	    # disable-user-extensions = true; # Optionally disable user extensions entirely
-	    enabled-extensions = [
-	      # Put UUIDs of extensions that you want to enable here.
-	      # If the extension you want to enable is packaged in nixpkgs,
-	      # you can easily get its UUID by accessing its extensionUuid
-	      # field (look at the following example).
-	      pkgs.gnomeExtensions.gnome-40-ui-improvements.extensionUuid
-              pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
-	    ];
-	  };
-    
-	  "org/gnome/shell/extensions/bing-wallpaper-changer" = {
-            hide = false;
-	    set-background = true;
-	  };
-	};
-      };
-
-      services.swww.enable = true;
-    };
-  };
-
   nixpkgs = {
     overlays = [
       (final: prev: {

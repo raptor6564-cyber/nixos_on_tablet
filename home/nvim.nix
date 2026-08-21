@@ -3,6 +3,13 @@
     neovim = {
       enable = true;
       defaultEditor = true;
+
+      # Устанавливаем treesitter и нужные грамматики через Nix
+      plugins = with pkgs.vimPlugins; [
+        (nvim-treesitter.withPlugins (p: [ p.lua p.bash p.nix p.json p.markdown ]))
+        # Или используйте (nvim-treesitter.withAllGrammars) для установки всех доступных языков
+      ];
+
       extraLuaConfig = ''
         vim.opt.ignorecase = true
         vim.opt.number = true
@@ -42,6 +49,15 @@
         end
         vim.opt.rtp:prepend(lazypath)
 
+        -- 2. Включаем treesitter (через нативный API Neovim 0.12)
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = { "lua", "bash", "nix", "json", "markdown" },
+          callback = function()
+            pcall(vim.treesitter.start)
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end,
+        })
+
         require("lazy").setup({
 
         -- 1. Цветовая тема (по желанию)
@@ -54,18 +70,6 @@
           end,
         },
 
-        -- 2. Treesitter (подсветка синтаксиса)
-        {
-          "nvim-treesitter/nvim-treesitter",
-          build = ":TSUpdate",
-          config = function()
-            require("nvim-treesitter.configs").setup({
-              ensure_installed = { "lua", "bash", "nix", "json", "markdown" },
-              highlight = { enable = true },
-              indent = { enable = true },
-            })
-          end,
-        },
 
         -- 3. LSP (новый синтаксис для Neovim 0.11+)
         {

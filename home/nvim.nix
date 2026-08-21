@@ -10,7 +10,7 @@
         # Или используйте (nvim-treesitter.withAllGrammars) для установки всех доступных языков
       ];
 
-      extraLuaConfig = ''
+      initLua = ''
         vim.opt.ignorecase = true
         vim.opt.number = true
         vim.opt.scrolloff = 8

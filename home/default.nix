@@ -15,6 +15,7 @@
         ./fish.nix
         ./nvim.nix
         ./niri/niri.nix
+        ./tmux/tmux.nix
       ];
 
       xdg.enable = true;

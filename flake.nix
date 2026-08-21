@@ -16,7 +16,6 @@
         ./disko-config.nix
         ./configuration.nix
         ./network.nix
-        ./tmux.nix
 
         home-manager.nixosModules.home-manager
         {

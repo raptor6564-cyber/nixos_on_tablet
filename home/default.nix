@@ -16,6 +16,7 @@
         ./nvim.nix
         ./niri/niri.nix
         ./tmux/tmux.nix
+        ./waybar/waybar.nix
       ];
 
       xdg.enable = true;

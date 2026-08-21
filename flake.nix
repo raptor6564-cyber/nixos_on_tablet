@@ -23,8 +23,6 @@
           home-manager.useUserPackages = true;
         }
         ./home/default.nix
-
-        ./waybar/waybar.nix
       ];
     };
   };

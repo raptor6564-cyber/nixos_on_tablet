@@ -634,13 +634,13 @@ binds {
     // Ваш основной конфиг niri
 
 switch-events {
-	    // Автоматически показывать клавиатуру когда вы отсоединили клавиатуру
-	    tablet-mode-on {
-		spawn "wvkbd-toggle";
-	    }
-	    // И прятать, когда подключили обратно
-	    tablet-mode-off {
-		spawn "wvkbd-toggle";
-	    }
+    // Автоматически показывать клавиатуру когда вы отсоединили клавиатуру
+    tablet-mode-on {
+        spawn "sh" "-c" "pkill -SIGUSR2 wvkbd-mobintl";
+    }
+    // И прятать, когда подключили обратно
+    tablet-mode-off {
+        spawn "sh" "-c" "pkill -SIGUSR1 wvkbd-mobintl";
+    }
 }
 

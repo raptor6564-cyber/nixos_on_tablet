@@ -9,7 +9,7 @@
         # PGHOST = "";
       };
 
-      home.packages = with pkgs; [ atool httpie blink-qt virt-viewer virt-manager ];
+      home.packages = with pkgs; [ wvkbd atool httpie blink-qt virt-viewer virt-manager ];
 
       imports = [
         ./fish.nix
@@ -17,6 +17,7 @@
         ./niri/niri.nix
         ./tmux/tmux.nix
         ./waybar/waybar.nix
+        ./wvkbd.nix
       ];
 
       xdg.enable = true;
@@ -50,16 +51,16 @@
           };
         };
 
-	"blink-qt" = { # Создайте запись для своего приложения
-	  name = "blink-qt";
-	  exec = "/home/koshchei/.nix-profile/bin/blink";
-	  terminal = false;
-	  type = "Application";
-	  categories = [ "Utility" ];
-	  icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
-	mimeType = [ "message/sip" ];
-	  # Другие параметры по необходимости
-	};
+        "blink-qt" = { # Создайте запись для своего приложения
+          name = "blink-qt";
+          exec = "/home/koshchei/.nix-profile/bin/blink";
+          terminal = false;
+          type = "Application";
+          categories = [ "Utility" ];
+          icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
+          mimeType = [ "message/sip" ];
+          # Другие параметры по необходимости
+        };
       };
 
       services.awww.enable = true;

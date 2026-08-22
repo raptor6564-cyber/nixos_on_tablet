@@ -1,7 +1,8 @@
 {
   "height": 30,
   "spacing": 4,
-  "modules-left": ["custom/media"],
+  "modules-left": [ "custom/keyboard", "custom/media"],
+
   "modules-right": [
     "mpd",
     "idle_inhibitor",
@@ -150,5 +151,10 @@
       "suspend": "systemctl suspend",
       "hibernate": "systemctl hibernate"
     }
+  },
+  "custom/keyboard": {
+    "format": "⌨",
+    "on-click": "pkill -SIGRTMIN wvkbd-mobintl",
+    "tooltip": false
   }
 }

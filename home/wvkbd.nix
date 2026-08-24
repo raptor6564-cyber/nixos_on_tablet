@@ -7,7 +7,7 @@
     Service = {
       # Флаг -L задает высоту клавиатуры в пикселях.
       # Вы также можете добавить флаги для кастомизации цветов (например, -bg, -fg, -text)
-      ExecStart = "${pkgs.wvkbd}/bin/wvkbd-mobintl --hidden -L 300";
+      ExecStart = "${pkgs.wvkbd}/bin/wvkbd-mobintl -R 8 -l full,cyrillic --landscape-layers full,cyrillic --hidden -L 300";
       Restart = "on-failure";
     };
     Install.WantedBy = [ "graphical-session.target" ];

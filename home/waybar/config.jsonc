@@ -156,5 +156,10 @@
     "format": "⌨",
     "on-click": "pkill -SIGRTMIN wvkbd-mobintl",
     "tooltip": false
+  },
+  "niri/language": {
+    "format": "{}",
+    "on-click": "niri msg action switch-layout next",
+    "tooltip": false
   }
 }

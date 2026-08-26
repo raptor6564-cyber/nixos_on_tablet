@@ -150,7 +150,6 @@ sensor:modalias:*
 		_7zz = _7zz-rar;  # Support for RAR extraction
      })
     # nerd-fonts.cousine
-    fuzzel
     # sfwbar
     wev
     brightnessctl

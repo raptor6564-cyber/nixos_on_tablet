@@ -9,7 +9,16 @@
         # PGHOST = "";
       };
 
-      home.packages = with pkgs; [ wvkbd atool httpie blink-qt virt-viewer virt-manager ];
+      home.packages = with pkgs; [
+        # (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+        fuzzel
+        wvkbd
+        atool
+        httpie
+        blink-qt
+        virt-viewer
+        virt-manager
+      ];
 
       imports = [
         ./fish.nix
@@ -18,6 +27,7 @@
         ./tmux/tmux.nix
         ./waybar/waybar.nix
         ./wvkbd.nix
+        ./fuzzel/fuzzel.nix
       ];
 
       xdg.enable = true;

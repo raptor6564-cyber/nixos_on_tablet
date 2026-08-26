@@ -1,7 +1,7 @@
 {
   "height": 30,
   "spacing": 4,
-  "modules-left": [ "custom/keyboard", "custom/media"],
+  "modules-left": [ "custom/launcher", "custom/keyboard", "custom/media"],
 
   "modules-right": [
     "mpd",
@@ -160,6 +160,11 @@
   "niri/language": {
     "format": "{}",
     "on-click": "niri msg action switch-layout next",
+    "tooltip": false
+  },
+  "custom/launcher": {
+    "format": "fuzzel",
+    "on-click": "sh -c 'pkill -x fuzzel || fuzzel'",
     "tooltip": false
   }
 }

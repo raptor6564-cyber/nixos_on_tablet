@@ -21,6 +21,31 @@ sensor:modalias:*
   boot.loader.efi.canTouchEfiVariables = true;
 
   systemd.tmpfiles.rules = [ "L /etc/ipsec.secrets - - - - /etc/ipsec.d/ipsec.nm-l2tp.secrets" ];
+
+  # --- Bluetooth ---
+  hardware.bluetooth.enable = true;        # Включает демон bluez
+  hardware.bluetooth.powerOnBoot = true;   # Включать модуль при загрузке
+
+  # Автоподключение ранее сопряжённых устройств
+  hardware.bluetooth.settings = {
+    General = {
+      AutoEnable = true;
+      FastConnectable = true;
+    };
+  };
+
+  # --- Звук через PipeWire ---
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;   # Для 32-битных приложений, если нужны
+    pulse.enable = true;        # Совместимость с PulseAudio-приложениями
+    wireplumber.enable = true;  # Менеджер сессий (обязателен для PipeWire)
+  };
+
+  # Приоритеты реального времени для аудио (рекомендуется)
+  security.rtkit.enable = true;
+
   environment.etc."strongswan.conf".text = "";
 
   # Set your time zone.
@@ -56,14 +81,6 @@ sensor:modalias:*
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
-  # services.pulseaudio.enable = true;
-  # OR
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-  };
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
@@ -73,7 +90,7 @@ sensor:modalias:*
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koshchei = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "audio" ]; # Enable ‘sudo’ for the user.
     # shell = pkgs.zsh;
     packages = with pkgs; [
       keepassxc
@@ -143,6 +160,8 @@ sensor:modalias:*
     fishPlugins.autopair
     fishPlugins.done
     fishPlugins.z
+
+    blueman        # GUI-апплет для управления устройствами
   ];
 
   environment.variables.EDITOR = "nvim";

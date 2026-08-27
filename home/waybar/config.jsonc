@@ -153,7 +153,7 @@
     }
   },
   "custom/keyboard": {
-    "format": "⌨",
+    "format": " ⌨ ",
     "on-click": "pkill -SIGRTMIN wvkbd-mobintl",
     "tooltip": false
   },
@@ -163,7 +163,7 @@
     "tooltip": false
   },
   "custom/launcher": {
-    "format": "fuzzel",
+    "format": " ☰Apps ",
     "on-click": "sh -c 'pkill -x fuzzel || fuzzel'",
     "tooltip": false
   }

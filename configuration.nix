@@ -6,10 +6,15 @@
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
+  # boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
 
   hardware.sensor.iio.enable = true;
+
+  services.iio-niri = {
+    enable = true;
+  };
+
   services.udev.extraHwdb = ''
 sensor:modalias:*
  ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
@@ -163,6 +168,7 @@ sensor:modalias:*
     fishPlugins.z
 
     blueman        # GUI-апплет для управления устройствами
+    xxd
   ];
 
   environment.variables.EDITOR = "nvim";

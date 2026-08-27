@@ -11,7 +11,6 @@ input {
         xkb {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
-
             // For example:
             layout "us,ru,by"
             options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
@@ -138,7 +137,7 @@ layout {
     // preset-window-heights { }
 
     // You can change the default width of the new windows.
-    default-column-width { proportion 0.5; }
+    default-column-width { proportion 0.66667; }
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
 

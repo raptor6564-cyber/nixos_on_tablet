@@ -2,19 +2,14 @@
   xdg.configFile."fuzzel/fuzzel.ini".text = ''
     [main]
     # Шрифт и размер — подберите под свой дисплей
-    font = JetBrainsMono Nerd Font 18
-    dpi-aware = yes
+    font = JetBrainsMono Nerd Font:size=18
+
+    # dpi-aware = yes
+
+    # image-size-ratio = 0.5
 
     # Сколько строк показывать
-    lines = 8
-
-    # Ширина в символах
-    width = 45
-
-    # Отступы, чтобы строки было удобно тапать
-    horizontal-pad = 24
-    vertical-pad = 16
-    inner-pad = 12
+    lines = 10
 
     # Высота строки задаётся через line-height
     line-height = 44

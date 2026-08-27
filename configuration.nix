@@ -4,6 +4,8 @@
 
 { config, lib, pkgs, inputs, ... }:
 {
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   boot.blacklistedKernelModules = [ "ilitek_ts_i2c" ];
   boot.kernelParams = [ "iio.allow_sysfs_buffer=1" ];
 

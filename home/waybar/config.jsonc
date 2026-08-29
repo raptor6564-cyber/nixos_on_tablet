@@ -13,6 +13,7 @@
     "memory",
     "temperature",
     "backlight",
+    "backlight/slider",
     "keyboard-state",
     "sway/language",
     "battery",
@@ -129,6 +130,11 @@
     },
     "on-click": "pavucontrol"
   },
+  "backlight/slider": {
+      "min": 0,
+      "max": 100,
+      "orientation": "horizontal"
+  },
   "custom/media": {
     "format": "{icon} {text}",
     "return-type": "json",
@@ -141,7 +147,7 @@
     "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null"
   },
   "custom/power": {
-    "format": "⏻ ",
+    "format": " ⏻ ",
     "tooltip": false,
     "menu": "on-click",
     "menu-file": "$HOME/.config/waybar/power_menu.xml",

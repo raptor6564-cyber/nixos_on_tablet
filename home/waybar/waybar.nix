@@ -19,6 +19,12 @@ in
       #custom-keyboard {
         background-color: #800000;
       }
+      #custom-power {
+        background-color: #800000;
+      }
+      #backlight-slider trough {
+        min-width: 100px;
+      }
     '';
   };
 

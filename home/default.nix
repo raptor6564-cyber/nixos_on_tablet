@@ -63,11 +63,11 @@
 
         "blink-qt" = { # Создайте запись для своего приложения
           name = "blink-qt";
-          exec = "/home/koshchei/.nix-profile/bin/blink";
+          exec = "${pkgs.blink-qt}/bin/blink";
           terminal = false;
           type = "Application";
           categories = [ "Utility" ];
-          icon = "/home/koshchei/.nix-profile/share/blink/icons/blink.ico";
+          icon = "${pkgs.blink-qt}/share/blink/icons/blink.png";
           mimeType = [ "message/sip" ];
           # Другие параметры по необходимости
         };

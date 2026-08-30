@@ -30,14 +30,16 @@ sensor:modalias:*
   systemd.tmpfiles.rules = [ "L /etc/ipsec.secrets - - - - /etc/ipsec.d/ipsec.nm-l2tp.secrets" ];
 
   # --- Bluetooth ---
-  hardware.bluetooth.enable = true;        # Включает демон bluez
-  hardware.bluetooth.powerOnBoot = true;   # Включать модуль при загрузке
+  hardware.bluetooth = {
+    enable = true;        # Включает демон bluez
+    powerOnBoot = false;   # Включать модуль при загрузке
 
   # Автоподключение ранее сопряжённых устройств
-  hardware.bluetooth.settings = {
-    General = {
-      AutoEnable = true;
-      FastConnectable = true;
+    settings = {
+      General = {
+        AutoEnable = false;
+        FastConnectable = true;
+      };
     };
   };
 

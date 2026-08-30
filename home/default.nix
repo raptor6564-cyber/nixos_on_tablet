@@ -18,6 +18,7 @@
         blink-qt
         virt-viewer
         virt-manager
+        pavucontrol
       ];
 
       imports = [

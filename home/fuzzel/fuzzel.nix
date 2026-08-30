@@ -19,6 +19,8 @@
 
     exit-on-keyboard-focus-loss = yes
 
+    terminal = foot -a '{cmd}' -T '{cmd}' {cmd}
+
     [colors]
     background = 1e1e2eee
     text = cdd6f4ff

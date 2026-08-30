@@ -72,9 +72,26 @@
           mimeType = [ "message/sip" ];
           # Другие параметры по необходимости
         };
+
+        yazi = {
+          name = "Yazi";
+          genericName = "Yazi File Manager";
+          exec = "yazi %f";
+          icon = "${pkgs.yazi}/share/pixmaps/yazi.png";
+          terminal = true;
+          categories = [ "System" "FileManager" "FileTools" "ConsoleOnly" ];
+          mimeType = [ "inode/directory" ];
+          type= "Application";
+          comment="Blazing fast terminal file manager written in Rust, based on async I/O";
+        };
       };
 
       services.awww.enable = true;
+
+      programs.yazi = {
+        enable = true;
+      };
+
     };
 
   };

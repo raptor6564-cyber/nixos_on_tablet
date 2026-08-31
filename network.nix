@@ -16,4 +16,7 @@
   #     path = "ipsec.nm-l2tp.secrets";
   #   }
   # ];
+  networking.extraHosts = ''
+    93.125.121.153 svn.smbusiness.by
+  '';
 }

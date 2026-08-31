@@ -117,7 +117,15 @@ sensor:modalias:*
         });
       })
     ];
-    config.permittedInsecurePackages = [ "libsoup-2.74.3" ];
+    config = {
+      permittedInsecurePackages = [ "libsoup-2.74.3" ];
+      allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+        "7zz"
+        "uasm"
+        "anydesk"
+        "libsciter"
+      ];
+    };
   };
 
   programs.firefox.enable = true;
@@ -168,14 +176,10 @@ sensor:modalias:*
 
     blueman        # GUI-апплет для управления устройствами
     xxd
+    anydesk
   ];
 
   environment.variables.EDITOR = "nvim";
-
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "7zz"
-    "uasm"
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -19,6 +19,7 @@
         virt-viewer
         virt-manager
         pavucontrol
+        rustdesk
       ];
 
       imports = [
@@ -29,6 +30,7 @@
         ./waybar/waybar.nix
         ./wvkbd.nix
         ./fuzzel/fuzzel.nix
+        ./yazi.nix
       ];
 
       xdg.enable = true;
@@ -37,7 +39,7 @@
       xdg.desktopEntries = {
         virt-viewer = {
           name = "Virt-Viewer";
-          exec = "virt-viewer -c qemu:///system";
+          exec = "virt-viewer -c qemu+ssh://koshchei@192.168.0.133/system";
           type = "Application";
           terminal = false;
           mimeType = [
@@ -56,7 +58,7 @@
           icon = "virt-viewer";
           actions = {
             "new-window" = {
-              exec = "virt-viewer -c qemu:///system";
+              exec = "virt-viewer -c qemu+ssh://koshchei@192.168.0.133/system";
               name = "New Window";
             };
           };
@@ -72,24 +74,12 @@
           mimeType = [ "message/sip" ];
           # Другие параметры по необходимости
         };
-
-        yazi = {
-          name = "Yazi";
-          genericName = "Yazi File Manager";
-          exec = "yazi %f";
-          icon = "${pkgs.yazi}/share/pixmaps/yazi.png";
-          terminal = true;
-          categories = [ "System" "FileManager" "FileTools" "ConsoleOnly" ];
-          mimeType = [ "inode/directory" ];
-          type= "Application";
-          comment="Blazing fast terminal file manager written in Rust, based on async I/O";
-        };
       };
 
       services.awww.enable = true;
 
-      programs.yazi = {
-        enable = true;
+      programs = {
+        thunderbird.enable = true;
       };
 
     };

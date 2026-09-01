@@ -99,11 +99,7 @@ sensor:modalias:*
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koshchei = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" ]; # Enable ‘sudo’ for the user.
-    # shell = pkgs.zsh;
-    packages = with pkgs; [
-      keepassxc
-    ];
+    extraGroups = [ "wheel" "audio" "wireshark" ]; # Enable ‘sudo’ for the user.
   };
 
   nixpkgs = {
@@ -128,7 +124,15 @@ sensor:modalias:*
     };
   };
 
-  programs.firefox.enable = true;
+  programs = {
+    firefox.enable = true;
+
+    wireshark = {
+      enable = true;
+      dumpcap.enable = true;
+      package = pkgs.wireshark;
+    };
+  };
 
   fonts.packages = with pkgs; [
     nerd-fonts.cousine
@@ -151,8 +155,6 @@ sensor:modalias:*
     htop
     tcpdump
     tmux
-    zsh
-    oh-my-zsh
     networkmanager-l2tp
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.bing-wallpaper-changer

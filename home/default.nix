@@ -20,6 +20,8 @@
         virt-manager
         pavucontrol
         rustdesk
+        drawing
+        keepassxc
       ];
 
       imports = [

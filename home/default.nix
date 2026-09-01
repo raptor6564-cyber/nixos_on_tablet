@@ -33,6 +33,7 @@
         ./wvkbd.nix
         ./fuzzel/fuzzel.nix
         ./yazi.nix
+        ./accounts.nix
       ];
 
       xdg.enable = true;
@@ -81,7 +82,18 @@
       services.awww.enable = true;
 
       programs = {
-        thunderbird.enable = true;
+        thunderbird = {
+          enable = true;
+          profiles = {
+            default = {
+              isDefault = true;
+              settings = {
+                "mail.spellcheck.inline" = true;
+                "general.smoothScroll" = true;
+              };
+            };
+          };
+        };
       };
 
     };

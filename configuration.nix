@@ -229,7 +229,7 @@ sensor:modalias:*
       enableFishIntegration = true;
       settings = {
         main = {
-          font = "CousineNerdFontMono:size=15";
+          font = "CousineNerdFontMono:size=14";
         };
         scrollback = {
           lines = 10000;

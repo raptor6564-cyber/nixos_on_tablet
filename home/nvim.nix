@@ -13,7 +13,7 @@
       initLua = ''
         vim.opt.ignorecase = true
         vim.opt.number = true
-        vim.opt.scrolloff = 8
+        vim.opt.scrolloff = 6
         vim.opt.keymap = 'russian-jcukenwin'
         vim.opt.iminsert = 0
         vim.opt.wrapscan = false
@@ -190,7 +190,11 @@
           "nvim-tree/nvim-tree.lua",
           dependencies = { "nvim-tree/nvim-web-devicons" },
           config = function()
-            require("nvim-tree").setup()
+            require("nvim-tree").setup({
+              view = {
+                width = 22,
+              },
+            })
             vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true })
           end,
         },

@@ -29,4 +29,31 @@ in
   };
 
   xdg.configFile."waybar/power_menu.xml".source = ./power_menu.xml;
+
+    # Скрипт управления окнами
+  xdg.configFile."waybar/window-actions.sh" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+
+      choice=$(printf "✕ Закрыть окно\n⛶ Полноэкранный режим\n🗗 Плавающий режим\n💀 Убить процесс" | \
+          ${pkgs.fuzzel}/bin/fuzzel --dmenu --prompt "Окно: " --width 30 --lines 4)
+
+      case "$choice" in
+        *"Закрыть окно")
+          ${pkgs.niri}/bin/niri msg action close-window
+          ;;
+        *"Полноэкранный режим")
+          ${pkgs.niri}/bin/niri msg action fullscreen-window
+          ;;
+        *"Плавающий режим")
+          ${pkgs.niri}/bin/niri msg action toggle-window-floating
+          ;;
+        *"Убить процесс")
+          pid=$(${pkgs.niri}/bin/niri msg windows | ${pkgs.jq}/bin/jq -r '.windows[] | select(.is_focused) | .pid')
+          [ -n "$pid" ] && kill -9 "$pid"
+          ;;
+      esac
+    '';
+  };
 }

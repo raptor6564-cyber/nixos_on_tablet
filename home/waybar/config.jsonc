@@ -172,5 +172,10 @@
     "format": " ☰Apps ",
     "on-click": "sh -c 'pkill -x fuzzel || fuzzel'",
     "tooltip": false
+  },
+  "niri/window": {
+    "format": "{}",
+    "max-length": 50,
+    "on-click": "$XDG_CONFIG_HOME/waybar/window-actions.sh"
   }
 }

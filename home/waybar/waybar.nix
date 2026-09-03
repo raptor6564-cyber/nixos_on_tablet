@@ -36,6 +36,13 @@ in
     text = ''
       #!/bin/sh
 
+      # Пытаемся убить уже запущенный экземпляр меню
+      if ${pkgs.procps}/bin/pkill -f "${pkgs.fuzzel}/bin/fuzzel.*--dmenu.*--prompt.*Окно:"; then
+        # Если процесс был найден и убит — выходим (меню закрылось)
+        exit 0
+      fi
+
+      # Если процесс не запущен — показываем меню
       choice=$(printf "✕ Закрыть окно\n⛶ Полноэкранный режим\n🗗 Плавающий режим\n💀 Убить процесс" | \
           ${pkgs.fuzzel}/bin/fuzzel --dmenu --prompt "Окно: " --width 30 --lines 4)
 

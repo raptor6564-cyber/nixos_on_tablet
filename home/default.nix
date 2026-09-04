@@ -21,6 +21,7 @@
         rustdesk
         drawing
         keepassxc
+        handy
       ];
 
       # .pgpass

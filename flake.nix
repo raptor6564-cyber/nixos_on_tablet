@@ -8,10 +8,15 @@
   };
 
   outputs = { self, nixpkgs, disko, home-manager, ... }@inputs: {
+    overlays.default = final: prev: {
+      handy = final.callPackage ./packages/handy { };
+    };
+
     nixosConfigurations.mytablet = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       modules = [
         ./hardware-configuration.nix
+        { nixpkgs.overlays = [ self.overlays.default ]; }
         disko.nixosModules.disko
         ./disko-config.nix
         ./configuration.nix

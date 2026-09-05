@@ -123,6 +123,15 @@
             folders = { };
           };
         };
+        obsidian = {
+          enable = true;
+          cli.enable = true;
+          defaultSettings = {
+            app = {
+              vimMode = true;
+            };
+          };
+        };
       };
 
     };

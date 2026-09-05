@@ -120,6 +120,7 @@ sensor:modalias:*
         "uasm"
         "anydesk"
         "libsciter"
+        "obsidian"
       ];
     };
   };

@@ -46,6 +46,7 @@
         ./wvkbd.nix
         ./fuzzel/fuzzel.nix
         ./yazi.nix
+        ./accounts.nix
       ];
 
       xdg = {
@@ -96,8 +97,6 @@
       services.awww.enable = true;
 
       programs = {
-        thunderbird.enable = true;
-
         dbeaver = {
           enable = true;
           dataSourcesSettings = {
@@ -132,9 +131,20 @@
             };
           };
         };
+
+        thunderbird = {
+          enable = true;
+          profiles = {
+            default = {
+              isDefault = true;
+              settings = {
+                "mail.spellcheck.inline" = true;
+                "general.smoothScroll" = true;
+              };
+            };
+          };
+        };
       };
-
     };
-
   };
 }

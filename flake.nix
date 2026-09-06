@@ -19,10 +19,14 @@
 
         home-manager.nixosModules.home-manager
         {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.koshchei.imports = [
+              ./home/default.nix
+];
+          };
         }
-        ./home/default.nix
       ];
     };
   };

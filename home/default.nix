@@ -1,4 +1,13 @@
 { config, lib, pkgs, ... }: {
+  age = {
+    identityPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+  secrets = {
+    example-secret = {
+        file = ../secrets/example-secret.age;
+      };
+    };
+  };
+
   home.stateVersion = "26.05";
   home.sessionVariables = {
     PGUSER = "postgres";
@@ -18,6 +27,7 @@
     rustdesk
     drawing
     keepassxc
+    agenix-cli
   ];
 
   # .pgpass

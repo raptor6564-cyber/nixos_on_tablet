@@ -5,9 +5,13 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, disko, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, disko, home-manager, agenix, ... }@inputs: {
     nixosConfigurations.mytablet = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       modules = [
@@ -23,6 +27,7 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             users.koshchei.imports = [
+              agenix.homeManagerModules.default
               ./home/default.nix
 ];
           };

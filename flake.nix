@@ -20,6 +20,7 @@
         ./disko-config.nix
         ./configuration.nix
         ./network.nix
+        agenix.nixosModules.default
 
         home-manager.nixosModules.home-manager
         {

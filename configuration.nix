@@ -180,6 +180,7 @@ sensor:modalias:*
     blueman        # GUI-апплет для управления устройствами
     xxd
     anydesk
+    rclone
   ];
 
   environment.variables.EDITOR = "nvim";

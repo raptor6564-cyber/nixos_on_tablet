@@ -8,12 +8,6 @@ in
   # 1. Секреты через agenix (на уровне home-manager)
   # Убедитесь, что пути к файлам .age верные относительно этого файла
   age.secrets = {
-#    "rclone-gdrive-client-id" = {
-#      file = ../secrets/rclone-gdrive-client-id.age; 
-#    };
-#    "rclone-gdrive-client-secret" = {
-#      file = ../secrets/rclone-gdrive-client-secret.age;
-#    };
     "rclone-gdrive-token" = {
       file = ../secrets/rclone-gdrive-token.age;
     };
@@ -33,8 +27,6 @@ in
       
       # Ссылки на расшифрованные секреты
       secrets = {
-# client_id = config.age.secrets."rclone-gdrive-client-id".path;
-# client_secret = config.age.secrets."rclone-gdrive-client-secret".path;
         token = config.age.secrets."rclone-gdrive-token".path;
       };
       
@@ -45,9 +37,9 @@ in
         
         options = {
           vfs-cache-mode = "writes";
-          # allow-other = true; # <-- ВРЕМЕННО ЗАКОММЕНТИРОВАНО для диагностики
+          allow-other = true; # <-- ВРЕМЕННО ЗАКОММЕНТИРОВАНО для диагностики
           daemon-timeout = "30s";
-          log-level = "DEBUG"; # Включаем DEBUG, чтобы увидеть реальную причину сбоя в логах
+          # log-level = "DEBUG"; # Включаем DEBUG, чтобы увидеть реальную причину сбоя в логах
         };
       };
     };

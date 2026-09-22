@@ -20,7 +20,6 @@
         ./disko-config.nix
         ./configuration.nix
         ./network.nix
-        agenix.nixosModules.default
 
         home-manager.nixosModules.home-manager
         {
@@ -30,7 +29,7 @@
             users.koshchei.imports = [
               agenix.homeManagerModules.default
               ./home/default.nix
-];
+            ];
           };
         }
       ];

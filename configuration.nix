@@ -125,16 +125,6 @@ sensor:modalias:*
     };
   };
 
-  programs = {
-    firefox.enable = true;
-
-    wireshark = {
-      enable = true;
-      dumpcap.enable = true;
-      package = pkgs.wireshark;
-    };
-  };
-
   fonts.packages = with pkgs; [
     nerd-fonts.cousine
   ];
@@ -185,17 +175,15 @@ sensor:modalias:*
 
   environment.variables.EDITOR = "nvim";
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
   programs = {
+    amnezia-vpn.enable = true;
+
+    wireshark = {
+      enable = true;
+      dumpcap.enable = true;
+      package = pkgs.wireshark;
+    };
+
     niri.enable = true;
 
     fish = {

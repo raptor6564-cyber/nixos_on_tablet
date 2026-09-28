@@ -160,5 +160,17 @@
         };
       };
     };
+
+    firefox = {
+      enable = true;
+      policies = {
+        Preferences = {
+          "dom.w3c_touch_events.enabled" = {
+            Value = 1;
+            Status = "locked";
+          };
+        };
+      };
+    };
   };
 }

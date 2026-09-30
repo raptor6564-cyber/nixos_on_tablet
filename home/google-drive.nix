@@ -37,9 +37,7 @@ in
         
         options = {
           vfs-cache-mode = "writes";
-          allow-other = true; # <-- ВРЕМЕННО ЗАКОММЕНТИРОВАНО для диагностики
           daemon-timeout = "30s";
-          # log-level = "DEBUG"; # Включаем DEBUG, чтобы увидеть реальную причину сбоя в логах
         };
       };
     };

@@ -19,6 +19,8 @@
     drawing
     keepassxc
     rclone
+    libreoffice
+    nautilus
   ];
 
   # .pgpass
@@ -110,26 +112,26 @@
               provider-properties = {
                 "@dbeaver-show-non-default-db@" = true;
               };
-              postgresql-develop = {
-                configuration = {
-                  database = "postgres";
-                  host = "192.168.0.170";
-                  port = "5432";
-                  auth-model = "postgres_pgpass";
-                  user = "postgres";
-                  provider-properties = {
-                    "@dbeaver-show-non-default-db@" = true;
-                  };
-                };
-                driver = "postgres-jdbc";
-                name = "PostgreSQL Develop";
-                provider = "postgresql";
-                save-password = true;
-                show-system-objects = true;
-              };
             };
             driver = "postgres-jdbc";
             name = "PostgreSQL Support";
+            provider = "postgresql";
+            save-password = true;
+            show-system-objects = true;
+          };
+          postgresql-develop = {
+            configuration = {
+              database = "postgres";
+              host = "192.168.0.170";
+              port = "5432";
+              auth-model = "postgres_pgpass";
+              user = "postgres";
+              provider-properties = {
+                "@dbeaver-show-non-default-db@" = true;
+              };
+            };
+            driver = "postgres-jdbc";
+            name = "PostgreSQL Develop";
             provider = "postgresql";
             save-password = true;
             show-system-objects = true;

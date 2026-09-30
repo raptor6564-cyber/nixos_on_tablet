@@ -184,7 +184,10 @@ sensor:modalias:*
       package = pkgs.wireshark;
     };
 
-    niri.enable = true;
+    niri = {
+      enable = true;
+      useNautilus = true;
+    };
 
     fish = {
       enable = true;

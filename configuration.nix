@@ -99,7 +99,7 @@ sensor:modalias:*
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koshchei = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "wireshark" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "audio" "wireshark" "input" ]; # Enable ‘sudo’ for the user.
   };
 
   nixpkgs = {
@@ -171,6 +171,8 @@ sensor:modalias:*
     xxd
     anydesk
     rclone
+    lsof
+    xwayland-satellite
   ];
 
   environment.variables.EDITOR = "nvim";

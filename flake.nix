@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
@@ -11,9 +12,14 @@
     };
   };
 
-  outputs = { self, nixpkgs, disko, home-manager, agenix, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, disko, home-manager, agenix, ... }@inputs:
+  let
+    system = "x86_64-linux";
+  in
+  {
     nixosConfigurations.mytablet = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
+      inherit system;
+      specialArgs = { inherit inputs nixpkgs-unstable; };
       modules = [
         ./hardware-configuration.nix
         disko.nixosModules.disko
@@ -30,6 +36,11 @@
               agenix.homeManagerModules.default
               ./home/default.nix
             ];
+
+            # Пробрасываем unstable в home-manager
+            extraSpecialArgs = {
+              unstable = nixpkgs-unstable.legacyPackages.${system};
+            };
           };
         }
       ];

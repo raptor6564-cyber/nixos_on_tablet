@@ -1,4 +1,5 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, unstable, ... }:
+{
   home.stateVersion = "26.05";
   home.sessionVariables = {
     PGUSER = "postgres";
@@ -21,6 +22,7 @@
     rclone
     libreoffice
     nautilus
+    unstable.handy
   ];
 
   # .pgpass
@@ -92,6 +94,21 @@
         mimeType = [ "message/sip" ];
         # Другие параметры по необходимости
       };
+      "rustdesk" = {
+        name = "RustDesk";
+        genericName = "Remote Desktop";
+        exec = "env -u WAYLAND_DISPLAY rustdesk %u";
+        icon = "rustdesk";
+        terminal = false;
+        categories = [ "Network" ];
+        mimeType = [ "x-scheme-handler/rustdesk" ];
+        settings = {
+          # Дадатковы параметр, які паведамляе сістэме, што праграма не падтрымлівае Wayland натыўна
+          StartupWMClass = "rustdesk";
+        };
+        comment = "Virtual / remote desktop infrastructure for everyone! Open source TeamViewer / Citrix alternative";
+        type = "Application";
+      };
     };
   };
 
@@ -132,6 +149,23 @@
             };
             driver = "postgres-jdbc";
             name = "PostgreSQL Develop";
+            provider = "postgresql";
+            save-password = true;
+            show-system-objects = true;
+          };
+          postgresql-office = {
+            configuration = {
+              database = "postgres";
+              host = "192.168.0.141";
+              port = "5432";
+              auth-model = "postgres_pgpass";
+              user = "postgres";
+              provider-properties = {
+                "@dbeaver-show-non-default-db@" = true;
+              };
+            };
+            driver = "postgres-jdbc";
+            name = "PostgreSQL Office";
             provider = "postgresql";
             save-password = true;
             show-system-objects = true;

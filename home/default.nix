@@ -50,6 +50,7 @@
     ./yazi.nix
     ./accounts.nix
     ./google-drive.nix
+    ./yandex-disk.nix
   ];
 
   xdg = {

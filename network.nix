@@ -18,5 +18,9 @@
   # ];
   networking.extraHosts = ''
     93.125.121.153 svn.smbusiness.by
+    93.125.121.153 demo2.smbusiness.by
+    93.125.121.153 demo3.smbusiness.by
+    93.125.121.153 demo4.smbusiness.by
+    93.125.121.153 wiki.smbusiness.by
   '';
 }

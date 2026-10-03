@@ -164,9 +164,15 @@
     "tooltip": false
   },
   "niri/language": {
-    "format": "{}",
-    "on-click": "niri msg action switch-layout next",
-    "tooltip": false
+    "format": "{short}",
+    "tooltip": false,
+    "menu": "on-click",
+    "menu-file": "$HOME/.config/waybar/lang-layouts_menu.xml",
+    "menu-actions": {
+      "english": "niri msg action switch-layout 0",
+      "russian": "niri msg action switch-layout 1",
+      "belarusian": "niri msg action switch-layout 2"
+    }
   },
   "custom/launcher": {
     "format": " ☰Apps ",

@@ -25,10 +25,16 @@ in
       #backlight-slider trough {
         min-width: 100px;
       }
+      #language.us { background-color: #0049bf; color: #ffffff; }
+      #language.ru { background-color: #bf0000; color: #ffffff; }
+      #language.by { background-color: #ffffff; color: #000000; }
     '';
   };
 
-  xdg.configFile."waybar/power_menu.xml".source = ./power_menu.xml;
+  xdg.configFile = {
+    "waybar/power_menu.xml".source = ./power_menu.xml;
+    "waybar/lang-layouts_menu.xml".source = ./lang-layouts_menu.xml;
+  };
 
     # Скрипт управления окнами
   xdg.configFile."waybar/window-actions.sh" = {
